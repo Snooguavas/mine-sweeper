@@ -1,5 +1,6 @@
 
 const grid = document.querySelector('.grid');
+let squares;
 grid.style.visibility = 'hidden';
 let lives = 0;
 let gameActive = false;
@@ -13,15 +14,17 @@ function createGrid(size) {
         newRow.className = 'row';
         grid.appendChild(newRow);
         
-        for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
             // create square
             const newSquare = document.createElement('div');
             newSquare.className = 'square'
             newSquare.id = n;
+            newSquare.addEventListener('click', checkSquare);
             newRow.appendChild(newSquare);
             n++;
         }
     }
+    squares = document.querySelectorAll('.square');
 }
 
 const gridInput = document.getElementById('setgrid');
@@ -30,15 +33,9 @@ gridInput.addEventListener('submit', function(evt) {
     const size = document.querySelector('#setgrid input').value;
     createGrid(size);
 });
-createGrid(4);
+// createGrid(4);
 let minesLoc = [];
 
-const squares = document.querySelectorAll('.square');
-
-for (square of squares) {
-    square.addEventListener('click', checkSquare);
-    // square.addEventListener('click', function() {console.log(this.id)});
-}
 
 
 function initGame() {
@@ -48,6 +45,7 @@ function initGame() {
         square.textContent = '';
         // allow to be rotated again
         square.classList.remove('rotate');
+        square.classList.remove('disabled');
     }
     while (minesLoc.length < Math.floor(squares.length / 3)) {
         const newLoc = Math.floor(Math.random() * squares.length);
@@ -61,7 +59,7 @@ function initGame() {
     
 }
 
-initGame();
+// initGame();
 const playButton = document.querySelector('.play-button');
 playButton.addEventListener('click', initGame);
 
